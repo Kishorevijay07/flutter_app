@@ -1,0 +1,64 @@
+workflows:
+  flutter-health-ai:
+    name: HealthAI Monitor Build
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+
+    scripts:
+      - name: Fix tflite_flutter compatibility
+        script: |
+          TFLITE_PATH="$HOME/.pub-cache/hosted/pub.dev"
+          
+          # Get installed tflite version
+          TFLITE_DIR=$(ls $TFLITE_PATH | grep tflite_flutter | head -1)
+          echo "Found: $TFLITE_DIR"
+          
+          TENSOR_FILE="$TFLITE_PATH/$TFLITE_DIR/lib/src/tensor.dart"
+          
+          if [ -f "$TENSOR_FILE" ]; then
+            echo "Patching $TENSOR_FILE"
+            sed -i '' \
+              's/UnmodifiableUint8ListView(/Uint8List.fromList(/g' \
+              "$TENSOR_FILE"
+            echo "✅ Patch applied"
+          else
+            echo "⚠️ tensor.dart not found yet, will patch after pub get"
+          fi
+
+      - name: Get Flutter packages
+        script: |
+          cd flutter_app
+          flutter pub get
+
+      - name: Patch tflite after pub get
+        script: |
+          TFLITE_PATH="$HOME/.pub-cache/hosted/pub.dev"
+          TFLITE_DIR=$(ls $TFLITE_PATH | grep tflite_flutter | head -1)
+          TENSOR_FILE="$TFLITE_PATH/$TFLITE_DIR/lib/src/tensor.dart"
+          
+          if grep -q "UnmodifiableUint8ListView" "$TENSOR_FILE" 2>/dev/null; then
+            sed -i '' \
+              's/UnmodifiableUint8ListView(/Uint8List.fromList(/g' \
+              "$TENSOR_FILE"
+            echo "✅ tflite patched successfully"
+          else
+            echo "✅ No patch needed"
+          fi
+
+      - name: Build Android APK
+        script: |
+          cd flutter_app
+          flutter build apk --release --no-codesign
+
+      - name: Build iOS IPA
+        script: |
+          cd flutter_app
+          flutter build ios --release --no-codesign
+
+    artifacts:
+      - flutter_app/build/app/outputs/flutter-apk/app-release.apk
+      - flutter_app/build/ios/iphoneos/Runner.app
+      - flutter_app/build/**/*.ipa
