@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
 
   # TFLite inference - FIXED VERSION
-  tflite_flutter: 0.10.3
+  tflite_flutter: 0.9.0
 
   # Camera & permissions
   camera: ^0.10.5+9
