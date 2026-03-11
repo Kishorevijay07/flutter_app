@@ -1,5 +1,5 @@
 name: health_ai_monitor
-description: AI-powered mobile health monitoring application with TFLite inference and camera-based pulse detection.
+description: AI-powered mobile health monitoring application.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -10,8 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # TFLite inference
-  tflite_flutter: ^0.10.3
+  # TFLite inference - FIXED VERSION
+  tflite_flutter: 0.10.3
 
   # Camera & permissions
   camera: ^0.10.5+9
@@ -20,12 +20,10 @@ dependencies:
   # UI & animations
   fl_chart: ^0.68.0
   animated_text_kit: ^4.2.2
-  lottie: ^3.1.0
   shimmer: ^3.0.0
 
   # State management
   provider: ^6.1.2
-  get: ^4.6.6
 
   # Utilities
   shared_preferences: ^2.2.3
@@ -43,7 +41,6 @@ flutter:
   assets:
     - assets/models/health_model.tflite
     - assets/models/scaler_params.json
-
   fonts:
     - family: Poppins
       fonts:
