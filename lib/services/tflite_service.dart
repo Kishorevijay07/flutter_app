@@ -16,9 +16,10 @@ class TFLiteService {
       final scalerJson =
           await rootBundle.loadString('assets/models/scaler_params.json');
       final scalerData = json.decode(scalerJson) as Map<String, dynamic>;
-      _mean = List<double>.from(scalerData['mean']);
-      _scale = List<double>.from(scalerData['scale']);
-
+      _mean = List<double>.from(
+          (scalerData['mean'] as List).map((e) => (e as num).toDouble()));
+      _scale = List<double>.from(
+          (scalerData['scale'] as List).map((e) => (e as num).toDouble()));
       final interpreterOptions = InterpreterOptions();
       _interpreter = await Interpreter.fromAsset(
         'assets/models/health_model.tflite',
