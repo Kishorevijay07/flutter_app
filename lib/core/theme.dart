@@ -41,7 +41,7 @@ class AppTheme {
           surface: surface,
           error: accentRed,
         ),
-        fontFamily: 'Poppins',
+        // fontFamily: '',
         textTheme: const TextTheme(
           displayLarge: TextStyle(
               fontSize: 32,
@@ -63,7 +63,7 @@ class AppTheme {
           backgroundColor: background,
           elevation: 0,
           titleTextStyle: TextStyle(
-              fontFamily: 'Poppins',
+              // fontFamily: 'Poppins',
               fontSize: 20,
               fontWeight: FontWeight.w600,
               color: textPrimary),
@@ -84,7 +84,7 @@ class AppTheme {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             textStyle: const TextStyle(
-                fontFamily: 'Poppins',
+                // fontFamily: 'Poppins',
                 fontSize: 15,
                 fontWeight: FontWeight.w600),
           ),
