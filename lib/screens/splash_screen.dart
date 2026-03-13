@@ -27,24 +27,25 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _init();
   }
 
-  Future<void> _init() async {
+Future<void> _init() async {
     await Future.delayed(const Duration(milliseconds: 800));
     if (!mounted) return;
     setState(() => _status = 'Loading AI model…');
     try {
       await context.read<TFLiteService>().loadModel();
       setState(() => _status = 'Ready!');
-      await Future.delayed(const Duration(milliseconds: 500));
-      if (mounted) Navigator.of(context).pushReplacement(
-        PageRouteBuilder(
-          pageBuilder: (_,a,b) => const HomeScreen(),
-          transitionsBuilder: (_,a,b,child) => FadeTransition(opacity: a, child: child),
-          transitionDuration: const Duration(milliseconds: 500),
-        ),
-      );
     } catch (e) {
-      setState(() => _status = 'Model load failed: $e');
+      setState(() => _status = 'Running in demo mode');
     }
+    await Future.delayed(const Duration(milliseconds: 800));
+    if (mounted) Navigator.of(context).pushReplacement(
+      PageRouteBuilder(
+        pageBuilder: (_,a,b) => const HomeScreen(),
+        transitionsBuilder: (_,a,b,child) =>
+            FadeTransition(opacity: a, child: child),
+        transitionDuration: const Duration(milliseconds: 500),
+      ),
+    );
   }
 
   @override
